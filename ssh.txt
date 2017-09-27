@@ -1,0 +1,1 @@
+ssh -L LOCAL_HOST:localhost:REDIRECTION_PORT dbosch621@mail.famaf.unc.edu.ar ssh -v -L REDIRECTION_PORT:localhost:8888 -N danibosch@172.18.4.167
