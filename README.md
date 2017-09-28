@@ -14,7 +14,7 @@
         - Part-of-speech tag.
         - Morfología de tag.
         - Funcionalidad.
-        - Triplas de dependencia (palabra__funcionalidad__palabra-head-del-arbol-de-dependencia-lematizada).
+        - Triplas de dependencia.
     * Eliminación de stopwords de los diccionarios de las palabras.
     * Eliminación de palabras poco frecuentes en el corpus, de los diccionarios de las palabras.
     * Eliminación de palabras poco frecuentes como contexto, de los diccionarios de las palabras.
@@ -121,7 +121,39 @@ Agregamos los contextos (ventana de 1 palabra)
                    contexts[c_der] = 0
                contexts[c_der] += 1
 
+Agregamos la tripla de dependencia: palabra__lemma__funcionalidad__palabra-head-del-arbol-de-dependencia-lematizada
 
+    tripla = "TRIPLA__" + w + "__" + word.lemma_ + "__" + word.dep_ + "__" + lemmatize(word.head.lemma_)
+    if not tripla in contexts:
+        contexts[tripla] = 0
+    contexts[tripla] += 1
+
+Separamos las palabras y sus features
+
+      clean_dicc = []
+      key_words = {}
+      wid = 0
+      for d in dicc:
+          if len(d) > 0:
+              key_words[d] = wid
+              wid += 1
+              clean_dicc.append(dicc[d])
+              
+Vectorizamos las palabras con Sklearn
+
+      from sklearn.feature_extraction import DictVectorizer
+      v = DictVectorizer(sparse=False)
+      matrix = v.fit_transform(dicc)
+      
+Normalizamos la matriz
+
+      matrix_normed = matrix / matrix.max(axis=0)
+      
+Ahora creamos los clusters:
+Utilizamos el algoritmo de kmeans de nltk para crear juntar en clusters. Las semillas son aleatorias. Iteramos a 3 valores. 
+
+      clusterer = kmeans.KMeansClusterer(k, cosine_distance, avoid_empty_clusters=True)
+      clusters = clusterer.cluster(matrix_normed, True)
 
 ## Resultados
 k = 50
