@@ -1,4 +1,8 @@
 # Clustering de palabras
+Agrupamiento de palabras según su relación sintáctica y semántica utilizando el argoritmo de k-means. 
+
+Trabajo perteneciente a la cátedra "Minería de Datos para Texto" de Laura Alonso Alemany - FaMAF UNC. 2017
+El corpus ultilizado es un dump de notas periodísticas del diario La Voz del Interior.
 
 ## Procedimiento
 ### Procesamiento del corpus
@@ -130,20 +134,20 @@ Agregamos la tripla de dependencia: palabra__lemma__funcionalidad__palabra-head-
 
 Separamos las palabras y sus features
 
-      clean_dicc = []
+      features = []
       key_words = {}
       wid = 0
       for d in dicc:
           if len(d) > 0:
               key_words[d] = wid
               wid += 1
-              clean_dicc.append(dicc[d])
+              features.append(dicc[d])
               
 Vectorizamos las palabras con Sklearn
 
       from sklearn.feature_extraction import DictVectorizer
       v = DictVectorizer(sparse=False)
-      matrix = v.fit_transform(dicc)
+      matrix = v.fit_transform(features)
       
 Normalizamos la matriz
 
