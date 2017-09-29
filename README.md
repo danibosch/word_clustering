@@ -153,16 +153,60 @@ Normalizamos la matriz
 
       matrix_normed = matrix / matrix.max(axis=0)
       
+Reducimos la dimensionalidad quitando aquellas columnas que tengan poca varianza, ya que no nos aporta demasiada información.
+
+      variances = np.square(matrix_normed).mean(axis=0) - np.square(matrix_normed.mean(axis=0))
+      threshold_v = 0.001
+      red_matrix = np.delete(matrix_normed, np.where(variances < threshold_v), axis=1)
+      
 Ahora creamos los clusters:
 Utilizamos el algoritmo de kmeans de nltk para crear juntar en clusters. Las semillas son aleatorias. Iteramos a 3 valores. 
 
       clusterer = kmeans.KMeansClusterer(k, cosine_distance, avoid_empty_clusters=True)
-      clusters = clusterer.cluster(matrix_normed, True)
+      clusters = clusterer.cluster(red_matrix, True)
 
 ## Resultados
 k = 50
+
+      # Stopwords
+      ['cero', 'en', 'que', 'porque', 'aunque', 'john', 'durante', 'sin', 'de', 'debajo', 'disponible', 'y', 'serio', 'evo', 'laura', 'pero', 'muy', 'cometido', 'o']
+      
+      # Días de la semana y meses
+      ['plástico', 'septiembre', 'diciembre', 'final', 'igual', 'jueves', 'domingo', 'junio', 'octubre', 'lunes', 'enero', 'abril', 'martes', 'mediodía', 'adriana', 'noviembre', 'viernes', 'sábado', 'siquiera', 'miércoles', 'setiembre', 'febrero', 'menos', 'donde', 'marzo']
+      
+      # Nombres propios
+      ['agustín', 'marta', 'bonaerense', 'isabel', 'francisco', 'vicente', 'carlos', 'nicolás', 'graciela', 'liliana', 'guerra', 'guillermo', 'juan', 'hugo', 'alfredo', 'fe', 'martín', 'felipe', 'liberal', 'alberto', 'lorenzo', 'rosa', 'cruz', 'pedro', 'ignacio', 'jerónimo', 'ana', 'julián', 'omar', 'elettore', 'antonio']
+      
+      # Funcionarios públicos
+      ['embajador', 'unasur', 'ong', 'camioneta', 'gerente', 'funcionario', 'decano', 'intendente', 'franco', 'marcela', 'indicador', 'jefe', 'lengua', 'vereda', 'autopista', 'arzobispo', 'viceintendente', 'vicegobernador', 'senador', 'premio', 'david', 'mandatario', 'fuero', 'presidente', 'ministro', 'piñera', 'gobernador', 'cardenal', 'vice', 'precandidato', 'comisario', 'vicepresidente', 'disposición', 'secretario', 'palacio', 'mamá', 'soledad', 'canciller', 'ministerio', 'subsecretario', 'tribunal', 'testimonio', 'bebé', 'doctor', 'fundación', 'director', 'imperio', 'colega', 'flamante', 'dictador']
+
 k = 100
+
+      # Stopwords
+      ['también', 'hacia', 'estar', 'en', 'que', 'no', 'a', 'porque', 'por', 'aun', 'quien', 'te', 'le', 'durante', 'sin', 'de', 'y', 'luego', 'poder', 'según', 'finalmente', 'comer', 'con', 'ya', 'se', 'ser', 'muy', 'o']
+
+      # Días de la semana y meses
+      ['septiembre', 'diciembre', 'julio', 'jueves', 'domingo', 'junio', 'octubre', 'lunes', 'enero', 'martes', 'noviembre', 'viernes', 'sábado', 'miércoles', 'setiembre', 'febrero', 'donde', 'marzo']
+      
+      # Nombres propios
+      ['blanco', 'vicente', 'eduardo', 'guerra', 'abril', 'ferreyra', 'horacio', 'alberto', 'silvia', 'pedro', 'omar', 'elettore', 'antonio']
+      
+      # Funcionarios públicos
+      ['embajador', 'decano', 'intendente', 'jefe', 'anuncio', 'viceintendente', 'senador', 'presidente', 'ministro', 'gobernador', 'vice', 'secretario', 'coordinador', 'subsecretario', 'director', 'dictador']
+
 k = 150
+
+      # Stopwords
+      ['también', 'estar', 'bastante', 'en', 'que', 'no', 'a', 'porque', 'por', 'tras', 'le', 'durante', 'de', 'hasta', 'y', 'poder', 'según', 'comer', 'con', 'presuntamente', 'ya', 'se', 'sino', 'cuando', 'desde', 'ser', 'o']
+      
+      # Días de la semana y meses
+      ['septiembre', 'diciembre', 'jueves', 'domingo', 'junio', 'octubre', 'lunes', 'enero', 'martes', 'noviembre', 'viernes', 'sábado', 'miércoles', 'setiembre', 'febrero', 'marzo']
+      
+      # Nombres propios
+      ['vicente', 'eduardo', 'costa', 'abril', 'ceballos', 'rafael', 'alberto', 'marcelo', 'silvia', 'pedro', 'omar', 'elettore', 'antonio']
+
+      # Funcionarios públicos
+      ['embajador', 'decano', 'intendente', 'fiscal', 'impuesto', 'jefe', 'anuncio', 'arzobispo', 'viceintendente', 'vicegobernador', 'senador', 'presidente', 'ministro', 'teatro', 'gobernador', 'cardenal', 'vice', 'comisario', 'secretario', 'subsecretario', 'bebé', 'director', 'imperio', 'flamante', 'dictador']
 
 ## Instalación
     $ wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
